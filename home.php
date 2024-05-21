@@ -9,7 +9,7 @@
 <body>
     <header class="header">
         <div class="logo">
-            <img src="logofirst.png" alt="Logo">
+            <img src="image/logofirst" alt="Logo">
             <span>Plano</span>
         </div>
         <div class="cta">
