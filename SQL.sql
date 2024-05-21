@@ -1,4 +1,5 @@
-
+CREATE DATABASE ProjetDB;
+use ProjetDB;
 
 CREATE TABLE Tache (
     ID_Tache INT PRIMARY KEY,
@@ -23,7 +24,7 @@ CREATE TABLE Projet (
     Debut DATE,
     Fin DATE,
     Objectif VARCHAR(255),
-    Avancement VARCHAR(255),
+    Avancement VARCHAR(255)
     
 );
 
@@ -46,7 +47,7 @@ CREATE TABLE Collaborateur (
     Projets INT,
     Taches INT,
     FOREIGN KEY (Projets) REFERENCES Projet(ID_Projet),
-    FOREIGN KEY (Taches) REFERENCES Tache(ID_Tache),
+    FOREIGN KEY (Taches) REFERENCES Tache(ID_Tache)
    
 );
 
