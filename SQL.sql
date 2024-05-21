@@ -1,16 +1,4 @@
-"CREATE TABLE Organisation (
-    ID_Organisation INT PRIMARY KEY,
-    NOM VARCHAR(50)
-    FOREIGN KEY (ID_Projet) REFERENCES Projet(ID_Projet),
-    FOREIGN KEY (ID_Collaborateur) REFERENCES Collaborateur(ID_Collaborateur)
-);"
 
-"CREATE TABLE Organisation (
-    ID_Organisation INT PRIMARY KEY,
-    Nom VARCHAR(255),
-    Projets INT,
-    FOREIGN KEY (Projets) REFERENCES Projet(ID_Projet)
-);"
 
 CREATE TABLE Tache (
     ID_Tache INT PRIMARY KEY,
@@ -36,8 +24,7 @@ CREATE TABLE Projet (
     Fin DATE,
     Objectif VARCHAR(255),
     Avancement VARCHAR(255),
-    Organisation INT,
-    FOREIGN KEY (Organisation) REFERENCES Organisation(ID_Organisation)
+    
 );
 
 CREATE TABLE Fichier (
@@ -58,10 +45,9 @@ CREATE TABLE Collaborateur (
     Mail VARCHAR(255),
     Projets INT,
     Taches INT,
-    Organisation INT,
     FOREIGN KEY (Projets) REFERENCES Projet(ID_Projet),
     FOREIGN KEY (Taches) REFERENCES Tache(ID_Tache),
-    FOREIGN KEY (Organisation) REFERENCES Organisation(ID_Organisation)
+   
 );
 
 CREATE TABLE Equipe (
