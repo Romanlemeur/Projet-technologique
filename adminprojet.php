@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Projets</title>
-    <link rel="stylesheet" href="projet.css">
+    <link rel="stylesheet" href="adminprojet.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         function toggleSettings() {
@@ -53,15 +53,15 @@
             <h1>Plano</h1>
         </div>
         <ul>
-            <li><a href="page.php">Accueil</a></li>
-            <li><a href="projet.php">Projet</a></li>
+            <li><a href="adminpage.php">Accueil</a></li>
+            <li><a href="adminprojet.php">Projet</a></li>
             <li><a href="#">Calendrier</a></li>
             <li><a href="#">Notifications</a></li>
         </ul>
         <div class="profile-banner">
             <img src="image/user.png" alt="Profil">
             <div class="profile-info">
-                <p>Nom du Profil</p>
+                <p>Admin</p>
                 <div class="settings-button">
                     <a href="javascript:void(0);" onclick="toggleSettings()"><img src="image/settings.png" alt="Réglages"></a>
                 </div>
@@ -147,7 +147,7 @@
     <div id="settings-tab" class="settings-tab">
         <div class="profile-section">
             <img src="image/user.png" alt="Profil">
-            <p>Nom du Profil</p>
+            <p>Admin</p>
             <input type="text" placeholder="Nouveau mot de passe">
             <input type="text" placeholder="Confirmer le mot de passe">
             <button>Nouveau Mot de Passe</button>
