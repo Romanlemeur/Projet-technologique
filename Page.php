@@ -84,14 +84,21 @@ $nomUtilisateur = $_SESSION['nom'];
                         // Obtention de la date de début et de fin de la semaine actuelle
                         $startDate = date('Y-m-d', strtotime('monday this week'));
                         $endDate = date('Y-m-d', strtotime('sunday this week'));
-                    
+                            
+                        $nom = $_SESSION['nom'] ;
                         // Requête pour récupérer les tâches pour la semaine actuelle
                         $sql = "SELECT Tache.*, GROUP_CONCAT(Collaborateur.Nom SEPARATOR ', ') as Collaborateurs
-                                FROM Tache
-                                LEFT JOIN Tache_Collaborateur ON Tache.ID_Tache = Tache_Collaborateur.ID_Tache
-                                LEFT JOIN Collaborateur ON Tache_Collaborateur.ID_Collaborateur = Collaborateur.ID_Collaborateur
-                                WHERE Debut <= '$endDate' AND Fin >= '$startDate'
-                                GROUP BY Tache.ID_Tache";
+                        FROM Tache
+                        LEFT JOIN Tache_Collaborateur ON Tache.ID_Tache = Tache_Collaborateur.ID_Tache
+                        LEFT JOIN Collaborateur ON Tache_Collaborateur.ID_Collaborateur = Collaborateur.ID_Collaborateur
+                        WHERE 
+                        EXISTS (
+                            SELECT 1
+                            FROM Tache_Collaborateur AS TC
+                            WHERE TC.ID_Tache = Tache.ID_Tache
+                            AND TC.ID_Collaborateur = (SELECT ID_Collaborateur FROM Collaborateur WHERE Nom = '$nom')
+                        )
+                        GROUP BY Tache.ID_Tache";
                         
                         $result = $conn->query($sql);
                         $tasks = [];
@@ -105,7 +112,7 @@ $nomUtilisateur = $_SESSION['nom'];
                         
                         return $tasks;
                     }
-                    
+
                     function generateColorFromId($id) {
                         // Convert the ID to a hexadecimal string and use it to generate a color
                         $hash = md5($id); // Create a hash from the ID

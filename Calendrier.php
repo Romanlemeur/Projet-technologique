@@ -1,13 +1,22 @@
 <?php
+session_start();
 // config.php
 include('config.php');
 
 function getTasks($conn, $date) {
+    $nom = $_SESSION['nom'] ;
+
     $sql = "SELECT Tache.*, GROUP_CONCAT(Collaborateur.Nom SEPARATOR ', ') as Collaborateurs
             FROM Tache
             LEFT JOIN Tache_Collaborateur ON Tache.ID_Tache = Tache_Collaborateur.ID_Tache
             LEFT JOIN Collaborateur ON Tache_Collaborateur.ID_Collaborateur = Collaborateur.ID_Collaborateur
             WHERE '$date' BETWEEN Debut AND Fin
+            AND EXISTS (
+                SELECT 1
+                FROM Tache_Collaborateur AS TC
+                WHERE TC.ID_Tache = Tache.ID_Tache
+                AND TC.ID_Collaborateur = (SELECT ID_Collaborateur FROM Collaborateur WHERE Nom = '$nom')
+            )
             GROUP BY Tache.ID_Tache";
     $result = $conn->query($sql);
     $tasks = [];
@@ -19,8 +28,8 @@ function getTasks($conn, $date) {
     return $tasks;
 }
 
+
 function generateColorFromId($id) {
-    // Convert the ID to a hexadecimal string and use it to generate a color
     $hash = md5($id); // Create a hash from the ID
     $color = substr($hash, 0, 6); // Use the first 6 characters as the color code
     return '#' . $color;
