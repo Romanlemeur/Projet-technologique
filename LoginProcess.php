@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 header("Location: Page.php");
                 exit();
             } else {
-                $_SESSION['error_message'] = "Mot de passe incorrect" . $row['Mdp'];
+                $_SESSION['error_message'] = "Mot de passe incorrect";
                 header("Location: loginPage.php");
                 exit();
             }
