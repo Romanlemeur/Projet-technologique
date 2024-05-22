@@ -1,3 +1,11 @@
+<?php
+session_start();
+if (!isset($_SESSION['nom'])) {
+    header("Location: loginPage.php"); // Rediriger vers la page de connexion si l'utilisateur n'est pas connecté
+    exit();
+}
+$nomUtilisateur = $_SESSION['nom'];
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -61,7 +69,7 @@
         <div class="profile-banner">
             <img src="image/user.png" alt="Profil">
             <div class="profile-info">
-                <p>Nom du Profil</p>
+                <p><?php echo htmlspecialchars($nomUtilisateur); ?></p>
                 <div class="settings-button">
                     <a href="javascript:void(0);" onclick="toggleSettings()"><img src="image/settings.png" alt="Réglages"></a>
                 </div>
@@ -130,7 +138,7 @@
     <div id="settings-tab" class="settings-tab">
         <div class="profile-section">
             <img src="image/user.png" alt="Profil">
-            <p>Nom du Profil</p>
+            <p><?php echo htmlspecialchars($nomUtilisateur); ?></p>
             <input type="text" placeholder="Nouveau mot de passe">
             <input type="text" placeholder="Confirmer le mot de passe">
             <button>Nouveau Mot de Passe</button>

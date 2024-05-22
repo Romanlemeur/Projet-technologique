@@ -164,7 +164,7 @@ $nomUtilisateur = $_SESSION['nom'];
     <div id="settings-tab" class="settings-tab">
         <div class="profile-section">
             <img src="image/user.png" alt="Profil">
-            <p>Nom du Profil</p>
+            <p><?php echo htmlspecialchars($nomUtilisateur); ?></p>
             <input type="text" placeholder="Nouveau mot de passe">
             <input type="text" placeholder="Confirmer le mot de passe">
             <button>Nouveau Mot de Passe</button>
