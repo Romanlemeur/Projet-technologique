@@ -13,7 +13,7 @@
             <span>Plano</span>
         </div>
         <div class="cta">
-            <a href="connexion.php">Connexion</a>
+            <a href="LoginPage.php">Connexion</a>
             <a href="#" class="btn">Première connexion</a>
         </div>
     </header>
