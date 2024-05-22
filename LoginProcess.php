@@ -16,10 +16,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (($mdp == $row['Mdp'])) {
                 $_SESSION['id_collaborateur'] = $row['ID_Collaborateur'];
                 $_SESSION['nom'] = $row['Nom'];
-                header("Location: Page.php");
+                if($_SESSION['nom'] == "Admin")
+                {
+                    header("Location: adminpage.php");
+                }
+                else
+                {
+                    header("Location: Page.php");
+                }
                 exit();
             } else {
-                $_SESSION['error_message'] = "Mot de passe incorrect" . $row['Mdp'];
+                $_SESSION['error_message'] = "Mot de passe incorrect";
                 header("Location: loginPage.php");
                 exit();
             }
