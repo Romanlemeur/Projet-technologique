@@ -55,7 +55,7 @@
         <ul>
             <li><a href="page.php">Accueil</a></li>
             <li><a href="projet.php">Projet</a></li>
-            <li><a href="#">Calendrier</a></li>
+            <li><a href="Calendrier.php">Calendrier</a></li>
             <li><a href="#">Notifications</a></li>
         </ul>
         <div class="profile-banner">

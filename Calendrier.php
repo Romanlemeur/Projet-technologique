@@ -85,36 +85,13 @@ if (isset($_GET['month'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calendrier</title>
+    <link rel="stylesheet" href="Page.css">
+    <link rel="stylesheet" href="Calendar.css">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <style>
-        .calendar-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        .calendar-table th, .calendar-table td {
-            width: 14.28%;
-            border: 1px solid #ccc;
-            text-align: center;
-            padding: 10px;
-        }
-        .calendar-table th {
-            background-color: #ecf0f1;
-        }
-        .date {
-            font-weight: bold;
-        }
-        .task {
-            background-color: #2ecc71;
-            color: white;
-            margin: 2px 0;
-            padding: 2px 5px;
-            border-radius: 3px;
-        }
-    </style>
 </head>
 <body>
     <h1>Calendrier de <?php echo "$month/$year"?></h1>
