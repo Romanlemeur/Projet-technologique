@@ -16,21 +16,6 @@ body {
     justify-content: space-between;
 }
 
-.navbar .logo {
-    text-align: center;
-    padding: 20px;
-}
-
-.navbar .logo img {
-    width: 80px;
-    height: auto;
-}
-
-.navbar .logo h1 {
-    font-size: 20px;
-    margin: 10px 0 0;
-}
-
 .navbar ul {
     list-style-type: none;
     padding: 0;
