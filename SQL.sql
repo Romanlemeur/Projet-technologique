@@ -70,12 +70,10 @@ CREATE TABLE Equipe (
     FOREIGN KEY (Projet) REFERENCES Projet(ID_Projet)
 );
 
-<<<<<<< HEAD
 INSERT INTO Collaborateur VALUES(1,"Bronze sur Lol","AntoineMDP","Antoine Baudet","AntoineBaudet@gmail.com");
 INSERT INTO Collaborateur VALUES(2,"Developpeur","ManuelMDP","Manuel Bassien","ManuelBassien@gmail.com");
 INSERT INTO Collaborateur VALUES(3,"Enorme Connard","RomanMDP","Roman LeMeur","RomanLeMeur@gmail.com");
 INSERT INTO Collaborateur VALUES(4,"Patissier","FranckMDP","Franck Faye","FranckFaye@gmail.com");
-=======
 CREATE TABLE Notification(
     ID_Notification INT PRIMARY KEY,
     Titre VARCHAR(255),
@@ -89,4 +87,3 @@ INSERT INTO Collaborateur VALUES(2,"Developpeur","ManuelMDP","Manuel Bassien","M
 INSERT INTO Collaborateur VALUES(3,"Enorme Connard","RomanMDP","Roman LeMeur","RomanLeMeur@gmail.com");
 INSERT INTO Collaborateur VALUES(4,"Patissier","FranckMDP","Franck Faye","FranckFaye@gmail.com");
 INSERT INTO Collaborateur VALUES(5,"Administrateur","AdminMDP","Admin","Admin@gmail.com")
->>>>>>> 1d48f5d7385508017b71c69b756001e403273164

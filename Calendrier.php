@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION['nom'])) {
-    header("Location: loginPage.php"); // Rediriger vers la page de connexion si l'utilisateur n'est pas connecté
+    header("Location: loginPage.php"); 
     exit();
 }
 include('config.php');
@@ -24,8 +24,8 @@ function getTasks($conn, $date) {
 }
 
 function generateColorFromId($id) {
-    $hash = md5($id); // Create a hash from the ID
-    $color = substr($hash, 0, 6); // Use the first 6 characters as the color code
+    $hash = md5($id); 
+    $color = substr($hash, 0, 6); 
     return '#' . $color;
 }
 
@@ -37,7 +37,7 @@ function generateCalendar($conn, $year, $month) {
     $firstDayOfMonth = new DateTime("$year-$month-01");
     $firstDayOfMonth->modify('first day of this month');
     $daysInMonth = $firstDayOfMonth->format('t');
-    $firstDayOfWeek = ($firstDayOfMonth->format('N') + 6) % 7; // Adjust for Monday as the first day
+    $firstDayOfWeek = ($firstDayOfMonth->format('N') + 6) % 7; 
     $date = 1 - $firstDayOfWeek;
 
     for ($i = 0; $i < 6; $i++) {
@@ -203,3 +203,6 @@ if (isset($_GET['month'])) {
 </body>
 </html>
 <?php $conn->close(); ?>
+
+
+
