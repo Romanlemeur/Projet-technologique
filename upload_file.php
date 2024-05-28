@@ -20,8 +20,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file'])) {
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
             // Ajouter le fichier dans la base de données
-            $stmt = $pdo->prepare('INSERT INTO Fichier (Nom, Type, Collaborateur, Commentaire) VALUES (?, ?, ?, ?)');
-            $stmt->execute([$file['name'], $file['type'], $_SESSION['collaborateur_id'], $projetId]);
+            $stmt = $pdo->prepare('INSERT INTO Fichier (Nom, Type, Projet) VALUES (?, ?, ?)');
+            $stmt->execute([$file['name'], $file['type'],$projetId]);
 
             header("Location: projet_detail.php?id=" . $projetId);
             exit();

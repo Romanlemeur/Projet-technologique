@@ -16,8 +16,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         // Ajouter le commentaire dans la base de données
-        $stmt = $pdo->prepare('INSERT INTO Commentaire (Message, Collaborateur, Tache) VALUES (?, ?, ?)');
-        $stmt->execute([$message, $_SESSION['collaborateur_id'], $projetId]);
+        $stmt = $pdo->prepare('INSERT INTO Commentaire (Message, Projet) VALUES (?, ?)');
+        $stmt->execute([$message, $projetId]);
 
         header("Location: projet_detail.php?id=" . $projetId);
         exit();

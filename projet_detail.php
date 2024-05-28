@@ -30,11 +30,12 @@ try {
     $stmt->execute([$projetId]);
     $taches = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    $stmt = $pdo->prepare('SELECT * FROM Commentaire WHERE Tache IN (SELECT ID_Tache FROM Tache WHERE Projet = ?)');
+    $stmt = $pdo->prepare('SELECT * FROM Commentaire WHERE Projet = ?');
     $stmt->execute([$projetId]);
     $commentaires = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    $stmt = $pdo->prepare('SELECT * FROM Fichier WHERE Commentaire IN (SELECT ID_Commentaire FROM Commentaire WHERE Tache IN (SELECT ID_Tache FROM Tache WHERE Projet = ?))');
+
+    $stmt = $pdo->prepare('SELECT * FROM Fichier WHERE Projet =?');
     $stmt->execute([$projetId]);
     $fichiers = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -108,11 +109,15 @@ try {
         <div class="file-section">
             <h3>Fichiers</h3>
             <ul>
+                <?php if (!empty($fichiers)): ?>
                 <?php foreach ($fichiers as $fichier): ?>
                     <li>
                         <a href="uploads/<?php echo htmlspecialchars($fichier['Nom']); ?>"><?php echo htmlspecialchars($fichier['Nom']); ?></a>
                     </li>
                 <?php endforeach; ?>
+                <?php else: ?>
+                    <li>Aucun fichier trouvé.</li>
+                <?php endif; ?>
             </ul>
             <form method="POST" action="upload_file.php" enctype="multipart/form-data">
                 <input type="file" name="file" required>
