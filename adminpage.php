@@ -22,8 +22,8 @@
         <ul>
             <li><a href="adminpage.php">Accueil</a></li>
             <li><a href="adminprojet.php">Projet</a></li>
-            <li><a href="adminCalendrier">Calendrier</a></li>
-            <li><a href="Alerte">Notifications</a></li>
+            <li><a href="adminCalendrier.php">Calendrier</a></li>
+            <li><a href="adminAlerte.php">Notifications</a></li>
         </ul>
         <div class="profile-banner">
             <img src="image/user.png" alt="Profil">
@@ -81,7 +81,7 @@
                 <h3>Les équipes</h3>
                     <ul>
                         <?php foreach ($equipes as $equipe): ?>
-                            <li><?php echo $equipe['Titre']; ?></li>
+                            <li><?php echo $equipe['Nom']; ?></li>
                         <?php endforeach; ?>
                     </ul>
                 <button>Gérer Les équipes</button>
@@ -103,8 +103,8 @@
             <div class="section">
                 <h3>Notifications</h3>
                 <ul>
-                    <?php foreach ($equipes as $equipe): ?>
-                        <li><?php echo $equipe['Titre']; ?></li>
+                    <?php foreach ($notifications as $notification): ?>
+                        <li><?php echo $notification['Titre']; ?></li>
                     <?php endforeach; ?>
                 </ul>
                 <button>Voir toutes les notifications</button>
