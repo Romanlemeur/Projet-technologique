@@ -253,35 +253,14 @@ $equipes = getEquipes($conn);
         <button class="suppri-button" onclick="redirectTo('supprimer_compte.php')">Supprimer le compte</button>
     </div>
 
-    <!-- Slide Up Panel for "Mes équipes" -->
-    <div id="slideUpPanel" class="slide-up-panel">
-        <div class="slide-up-panel-content">
-            <span class="close-slide-up-panel" onclick="closeSlideUpPanel()">&times;</span>
-            <h2>Mes Équipes</h2>
-            <?php
-                foreach ($equipes as $equipe => $collaborateurs) {
-                    echo "<h3>$equipe</h3><ul>";
-                    foreach ($collaborateurs as $collaborateur) {
-                        echo "<li>$collaborateur</li>";
-                    }
-                    echo "</ul>";
-                }
-            ?>
-        </div>
-    </div>
-
     <!-- Slide Up Panel for "Voir les équipes" -->
     <div id="slideUpPanelEquipes" class="slide-up-panel-equipes">
         <div class="slide-up-panel-equipes-content">
             <span class="close-slide-up-panel-equipes" onclick="closeSlideUpPanelEquipes()">&times;</span>
             <h2>Liste des Équipes</h2>
             <?php
-                foreach ($equipes as $equipe => $collaborateurs) {
-                    echo "<h3>$equipe</h3><ul>";
-                    foreach ($collaborateurs as $collaborateur) {
-                        echo "<li>$collaborateur</li>";
-                    }
-                    echo "</ul>";
+                foreach ($equipes as $equipe) {
+                    echo "<li>$equipe</li>";
                 }
             ?>
         </div>
