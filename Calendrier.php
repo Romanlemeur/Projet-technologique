@@ -99,6 +99,24 @@ if (isset($_GET['month'])) {
             var settingsTab = document.getElementById("settings-tab");
             settingsTab.style.display = settingsTab.style.display === "block" ? "none" : "block";
         }
+        function updatePassword() {
+            var newPassword = document.getElementById('new-password').value;
+            var confirmPassword = document.getElementById('confirm-password').value;
+
+            if (newPassword === confirmPassword) {
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "update_password.php", true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        alert("Mot de passe mis à jour avec succès");
+                    }
+                };
+                xhr.send("newPassword=" + encodeURIComponent(newPassword));
+            } else {
+                alert("Les mots de passe ne correspondent pas");
+            }
+        }
     </script>
 </head>
 <body>
@@ -128,12 +146,12 @@ if (isset($_GET['month'])) {
         <div class="profile-section">
             <img src="image/user.png" alt="Profil">
             <p><?php echo htmlspecialchars($nomUtilisateur); ?></p>
-            <input type="text" placeholder="Nouveau mot de passe">
-            <input type="text" placeholder="Confirmer le mot de passe">
-            <button>Nouveau Mot de Passe</button>
+            <input type="password" id="new-password" placeholder="Nouveau mot de passe">
+            <input type="password" id="confirm-password" placeholder="Confirmer le mot de passe">
+            <button onclick="updatePassword()">Nouveau Mot de Passe</button>
         </div>
-        <button class="logout-button">Déconnexion</button>
-        <button class="suppri-button">Supprimer le compte</button>
+        <button class="logout-button" onclick="redirectTo('logout.php')">Déconnexion</button>
+        <button class="suppri-button" onclick="redirectTo('supprimer_compte.php')">Supprimer le compte</button>
     </div>
 
     <div class="main-container">
