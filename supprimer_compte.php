@@ -14,7 +14,7 @@ if (isset($_SESSION['nom'])) {
         
         session_unset();
         session_destroy();
-        header("Location: login.php"); 
+        header("Location: PageLogin.php"); 
         exit();
     } else {
         echo "Erreur lors de la suppression du compte. Veuillez réessayer.";
