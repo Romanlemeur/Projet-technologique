@@ -10,7 +10,6 @@ include('config.php');
 
 function getEquipes($conn) {
     $sql = "SELECT Nom FROM Equipe";
-    
     $result = $conn->query($sql);
     $equipes = [];
 
@@ -22,7 +21,35 @@ function getEquipes($conn) {
     return $equipes;
 }
 
+function getProjets($conn) {
+    $sql = "SELECT Titre FROM Projet";
+    $result = $conn->query($sql);
+    $projets = [];
+
+    if ($result->num_rows > 0) {
+        while($row = $result->fetch_assoc()) {
+            $projets[] = $row['Titre'];
+        }
+    }
+    return $projets;
+}
+
+function getNotifications($conn) {
+    $sql = "SELECT Titre, Contenu FROM Notification";
+    $result = $conn->query($sql);
+    $notifications = [];
+
+    if ($result->num_rows > 0) {
+        while($row = $result->fetch_assoc()) {
+            $notifications[] = ['Titre' => $row['Titre'], 'Contenu' => $row['Contenu']];
+        }
+    }
+    return $notifications;
+}
+
 $equipes = getEquipes($conn);
+$projets = getProjets($conn);
+$notifications = getNotifications($conn);
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -95,6 +122,7 @@ $equipes = getEquipes($conn);
         function closeSlideUpPanelEquipes() {
             document.getElementById('slideUpPanelEquipes').classList.remove('show');
         }
+
         function updatePassword() {
             var newPassword = document.getElementById('new-password').value;
             var confirmPassword = document.getElementById('confirm-password').value;
@@ -143,9 +171,11 @@ $equipes = getEquipes($conn);
             <div class="section">
                 <h3>Projets en cours</h3>
                 <ul>
-                    <li>Projet 1</li>
-                    <li>Projet 2</li>
-                    <li>Projet 3</li>
+                    <?php
+                        foreach ($projets as $projet) {
+                            echo "<li>$projet</li>";
+                        }
+                    ?>
                 </ul>
                 <button onclick="redirectTo('Projet.php')">Mes projets</button>
             </div>
@@ -163,9 +193,11 @@ $equipes = getEquipes($conn);
             <div class="section">
                 <h3>Notifications</h3>
                 <ul>
-                    <li>Notification 1</li>
-                    <li>Notification 2</li>
-                    <li>Notification 3</li>
+                    <?php
+                        foreach ($notifications as $notification) {
+                            echo "<li><strong>{$notification['Titre']}:</strong> {$notification['Contenu']}</li>";
+                        }
+                    ?>
                 </ul>
                 <button onclick="redirectTo('Alerte.php')">Voir toutes les notifications</button>
             </div>
