@@ -65,7 +65,6 @@ $nomUtilisateur = $_SESSION['nom'];
         };
     </script>
     <style>
-        /* Styles pour le formulaire modal */
         .modal {
             display: none; 
             position: fixed; 
@@ -138,7 +137,7 @@ $nomUtilisateur = $_SESSION['nom'];
             <li><a href="page.php">Accueil</a></li>
             <li><a href="projet.php">Projet</a></li>
             <li><a href="Calendrier.php">Calendrier</a></li>
-            <li><a href="Alerte.php">Notifications</a></li>
+            <li><a href="#">Notifications</a></li>
         </ul>
         <div class="profile-banner">
             <img src="image/user.png" alt="Profil">

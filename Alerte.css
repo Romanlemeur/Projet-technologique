@@ -186,107 +186,29 @@ h2 {
     background-color: #c0392b;
 }
 
-.sections-container {
+.alerts-container {
     display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
+    flex-direction: column;
 }
 
-.section {
-    width: 30%;
+.alert-section {
+    margin-bottom: 20px;
     background-color: #e3e3e3;
     padding: 20px;
-    border-radius: 20px;
-    text-align: center;
+    border-radius: 10px;
 }
 
-.section h3 {
-    margin-top: 6px;
+.alert-section h3 {
+    margin-top: 0;
     font-size: 22px;
 }
 
-.section ul {
+.alert-section ul {
     list-style-type: none;
     padding: 0;
-    margin-top: 20px;
 }
 
-.section ul li {
-    margin-bottom: 20px;
-    font-size: 18px;
-}
-
-.section button {
-    display: inline-block;
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    color: white;
-    background-color: #f28e03;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    margin-top: 20px;
-}
-
-.section button:hover {
-    background-color: #d47e06;
-}
-
-.calendar-section {
-    background-color: #e3e3e3;
-    padding: 20px;
-    border-radius: 20px;
-    text-align: center;
-    height: 500px;
-}
-
-.calendar-section h3 {
-    margin-top: 6px;
-    font-size: 22px;
-}
-
-.accueil {
-    font-size: 30px;
-    text-align: center;
-}
-.notification {
-    background-color: rgb(167, 163, 163);
-    padding: 5px;
-    border-radius: 15px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+.alert-section ul li {
     margin-bottom: 10px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    font-size: 16px;
 }
-
-.notification:hover {
-    transform: scale(1.01);
-    box-shadow: 0 0 5px rgba(136, 136, 136, 0.2);
-}
-.search-bar {
-    background-color: #124E78;
-    padding: 10px;
-    color: white;
-    display: flex;
-    align-items: center;
-}
-
-.search-bar input[type="text"] {
-    flex-grow: 1;
-    border: none;
-    outline: none;
-    padding: 6px; /* Ajustement de la taille du padding */
-    border-radius: 5px;
-    background-color: rgba(255, 255, 255, 0.5); /* Réduire l'opacité pour le rectangle blanc */
-}
-
-.search-bar button {
-    background-color: #000000;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-left: 10px;
-}
-
