@@ -6,12 +6,22 @@ if (!isset($_SESSION['nom'])) {
 }
 include('config.php');
 $nomUtilisateur = $_SESSION['nom'];
+
 function getTasks($conn, $date) {
+    $nomUtilisateur = $_SESSION['nom'];
+
     $sql = "SELECT Tache.*, GROUP_CONCAT(Collaborateur.Nom SEPARATOR ', ') as Collaborateurs
             FROM Tache
             LEFT JOIN Tache_Collaborateur ON Tache.ID_Tache = Tache_Collaborateur.ID_Tache
             LEFT JOIN Collaborateur ON Tache_Collaborateur.ID_Collaborateur = Collaborateur.ID_Collaborateur
             WHERE '$date' BETWEEN Debut AND Fin
+            AND EXISTS (
+                SELECT 1
+                FROM Tache_Collaborateur
+                JOIN Collaborateur ON Tache_Collaborateur.ID_Collaborateur = Collaborateur.ID_Collaborateur
+                WHERE Tache_Collaborateur.ID_Tache = Tache.ID_Tache
+                AND Collaborateur.Nom = '$nomUtilisateur'
+            )
             GROUP BY Tache.ID_Tache";
     $result = $conn->query($sql);
     $tasks = [];
@@ -129,7 +139,7 @@ if (isset($_GET['month'])) {
             <li><a href="page.php">Accueil</a></li>
             <li><a href="projet.php">Projet</a></li>
             <li><a href="Calendrier.php">Calendrier</a></li>
-            <li><a href="#">Notifications</a></li>
+            <li><a href="Alerte.php">Notifications</a></li>
         </ul>
         <div class="profile-banner">
             <img src="image/user.png" alt="Profil">
