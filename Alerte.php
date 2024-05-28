@@ -73,31 +73,57 @@
                 </div>
             </div>
     </div>
+ <h2 class="accueil">Notifications, Alertes et Rappels</h2>
+    <div class="search-bar">
+        <input type="text" placeholder="Rechercher...">
+        <button>Rechercher</button>
+    </div> 
     <div class="main-content">
-    <h2 class="accueil">Notifications, Alertes et Rappels</h2>
+   <script>
+   function showDeleteButton(event) {
+    event.preventDefault(); // Empêche le menu contextuel par défaut de s'afficher
+    var deleteButton = document.getElementById('deleteButton');
+    deleteButton.style.display = 'block'; // Affiche le bouton supprimer
+    deleteButton.style.position = 'absolute';
+    deleteButton.style.left = event.clientX + 'px'; // Positionne le bouton à la position du clic
+    deleteButton.style.top = event.clientY + 'px';
+    // Enregistre l'élément sur lequel le clic droit a été effectué pour le supprimer plus tard
+    selectedNotification = event.target;
+}
+
+function deleteSelectedNotifications() {
+    selectedNotification.remove(); // Supprime l'élément sélectionné
+    var deleteButton = document.getElementById('deleteButton');
+    deleteButton.style.display = 'none'; // Cache le bouton supprimer
+}
+</script>
     <div class="notification-container">
-        <!-- Notification pour les commentaires -->
-        <div id="comment-notification" class="notification" style="display: none;">
-            <h3>Notifications: commentaires ajoutés</h3>
-            <p>Des commentaires ont été ajoutés à certains projets.</p>
-        </div>
+    <div id="comment-notification" class="notification" style="display: none;" oncontextmenu="showDeleteButton(event)">
+    <h3>Notifications: commentaires ajoutés</h3>
+    <p>Des commentaires ont été ajoutés à certains projets.</p>
+</div>
 
-        <!-- Notification pour les budgets bientôt atteints -->
-        <div id="budget-notification" class="notification" style="display: none;">
-            <h3>Notifications: Budgets Bientôt Atteints</h3>
-            <p>Les budgets alloués sont bientôt atteints pour certains projets.</p>
-        </div>
+<!-- Notification pour les budgets bientôt atteints -->
+<div id="budget-notification" class="notification" style="display: none;" oncontextmenu="showDeleteButton(event)">
+    <h3>Notifications: Budgets Bientôt Atteints</h3>
+    <p>Les budgets alloués sont bientôt atteints pour certains projets.</p>
+</div>
 
-        <!-- Notification pour les délais approchants -->
-        <div id="deadline-notification" class="notification" style="display: none;">
-            <h3 style="color: red;">Notifications: Délais Approchants</h3>
-            <p>Les délais approchent pour certains projets.</p>
-        </div>
+<!-- Notification pour les délais approchants -->
+<div id="deadline-notification" class="notification" style="display: none;" oncontextmenu="showDeleteButton(event)">
+    <h3 style="color: red;">Notifications: Délais Approchants</h3>
+    <p>Les délais approchent pour certains projets.</p>
+</div>
+
+<!-- Bouton de suppression -->
+<button id="deleteButton" style="display: none;" onclick="deleteSelectedNotifications()">Supprimer</button>
     </div>
  
 </div>
 
-    </div>
+</div>
+   
+    
     <div id="settings-tab" class="settings-tab">
     <div class="profile-section">
             <img src="image/user.png" alt="Profil">

@@ -167,7 +167,7 @@ $equipes = getEquipes($conn);
                     <li>Notification 2</li>
                     <li>Notification 3</li>
                 </ul>
-                <button onclick="redirectTo('alerte.php')">Voir toutes les notifications</button>
+                <button onclick="redirectTo('Alerte.php')">Voir toutes les notifications</button>
             </div>
         </div>
         <div class="calendar-section">

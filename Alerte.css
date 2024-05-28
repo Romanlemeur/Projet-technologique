@@ -263,5 +263,30 @@ h2 {
     transform: scale(1.01);
     box-shadow: 0 0 5px rgba(136, 136, 136, 0.2);
 }
+.search-bar {
+    background-color: #124E78;
+    padding: 10px;
+    color: white;
+    display: flex;
+    align-items: center;
+}
 
+.search-bar input[type="text"] {
+    flex-grow: 1;
+    border: none;
+    outline: none;
+    padding: 6px; /* Ajustement de la taille du padding */
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.5); /* Réduire l'opacité pour le rectangle blanc */
+}
+
+.search-bar button {
+    background-color: #000000;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px;
+}
 
