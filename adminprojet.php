@@ -1,11 +1,14 @@
 <?php
 session_start();
 if (!isset($_SESSION['nom'])) {
-    header("Location: loginPage.php"); // Rediriger vers la page de connexion si l'utilisateur n'est pas connecté
+    header("Location: loginPage.php"); 
     exit();
 }
 $nomUtilisateur = $_SESSION['nom'];
 ?>
+
+
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -18,6 +21,14 @@ $nomUtilisateur = $_SESSION['nom'];
         function toggleSettings() {
             var settingsTab = document.getElementById('settings-tab');
             settingsTab.classList.toggle('visible');
+        }
+
+        function openModal() {
+            document.getElementById('newProjectModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('newProjectModal').style.display = 'none';
         }
 
         window.onload = function() {
@@ -53,6 +64,69 @@ $nomUtilisateur = $_SESSION['nom'];
             });
         };
     </script>
+    <style>
+        /* Styles pour le formulaire modal */
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 1; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgb(0,0,0); 
+            background-color: rgba(0,0,0,0.4); 
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto; 
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; 
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal input, .modal textarea {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .modal button {
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .modal button:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
     <div class="navbar">
@@ -88,18 +162,14 @@ $nomUtilisateur = $_SESSION['nom'];
 
             <?php
                 try {
-                    // Établir une connexion à la base de données
                     $pdo = new PDO('mysql:host=localhost;dbname=plano', 'root', '');
                     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-                    // Vérifier si une recherche a été effectuée
                     $search = isset($_GET['search']) ? $_GET['search'] : '';
                     if ($search) {
-                        // Requête SQL avec une clause WHERE pour filtrer les projets par titre
                         $stmt = $pdo->prepare('SELECT * FROM Projet WHERE Titre LIKE ?');
                         $stmt->execute(['%' . $search . '%']);
                     } else {
-                        // Requête SQL pour récupérer tous les projets
                         $stmt = $pdo->query('SELECT * FROM Projet');
                     }
                     $projets = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -113,7 +183,6 @@ $nomUtilisateur = $_SESSION['nom'];
                 <ul class="project-list">
                     <?php foreach ($projets as $projet): ?>
                         <?php
-                            // Récupérer le nombre total de tâches et le nombre de tâches terminées pour chaque projet
                             $stmt = $pdo->prepare('SELECT COUNT(*) as total, SUM(état) as completed FROM Tache WHERE Projet = ?');
                             $stmt->execute([$projet['ID_Projet']]);
                             $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -121,16 +190,14 @@ $nomUtilisateur = $_SESSION['nom'];
                             $tachesTerminees = $result['completed'];
                             $avancement = ($totalTaches > 0) ? ($tachesTerminees / $totalTaches) * 100 : 0;
 
-                            // Calculer le délai restant
                             $dateFin = new DateTime($projet['Fin']);
                             $dateActuelle = new DateTime();
                             $interval = $dateActuelle->diff($dateFin);
                             $joursRestants = $interval->days;
                             if ($dateActuelle > $dateFin) {
-                                $joursRestants *= -1; // Nombre de jours de retard
+                                $joursRestants *= -1; 
                             }
 
-                            // Déterminer la classe du projet en fonction de l'avancement et du délai restant
                             $classeProjet = 'success';
                             if ($avancement < 75) {
                                 if ($joursRestants < 30) {
@@ -153,18 +220,54 @@ $nomUtilisateur = $_SESSION['nom'];
                                         <div class="progress-bar" style="width: <?= number_format($avancement, 2) ?>%;"></div>
                                     </div>
                                     <div class="modify">
-                                        <a href="#"><img src="image/edit.png" alt="Modifier"></a>
+                                        <form method="POST" action="projet.php">
+                                            <input type="hidden" name="project_id" value="<?= $projet['ID_Projet'] ?>">
+                                            <button type="submit" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce projet ?');">
+                                                <img src="image/corbeille.png" alt="supprimer">
+                                            </button>
+                                        </form>
                                     </div>
                             </li>
                         </a>
                     <?php endforeach; ?>
                 </ul>
             </div>
+            <button onclick="openModal()">Nouveau Projet</button>
         </div>
         <div class="chart-container">
             <canvas id="projectsChart"></canvas>
         </div>
     </div>
+
+    <!-- Modal pour créer un nouveau projet -->
+    <div id="newProjectModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Nouveau Projet</h2>
+            <form method="POST" action="create_project.php">
+                <label for="titre">Titre:</label>
+                <input type="text" id="titre" name="titre" required>
+
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" required></textarea>
+
+                <label for="debut">Date de début:</label>
+                <input type="date" id="debut" name="debut" required>
+
+                <label for="fin">Date de fin:</label>
+                <input type="date" id="fin" name="fin" required>
+
+                <label for="objectif">Objectif:</label>
+                <input type="text" id="objectif" name="objectif" required>
+
+                <label for="budget">Budget:</label>
+                <input type="number" id="budget" name="budget" required>
+
+                <button type="submit">Créer Projet</button>
+            </form>
+        </div>
+    </div>
+
     <div id="settings-tab" class="settings-tab">
         <div class="profile-section">
             <img src="image/user.png" alt="Profil">
@@ -173,8 +276,8 @@ $nomUtilisateur = $_SESSION['nom'];
             <input type="text" placeholder="Confirmer le mot de passe">
             <button>Nouveau Mot de Passe</button>
         </div>
-        <button class="logout-button">Déconnexion</button>
-        <button class="suppri-button">Supprimer le compte</button>
+        <button class="logout-button" onclick="redirectTo('logout.php')">Déconnexion</button>
+        <button class="suppri-button" onclick="redirectTo('supprimer_compte.php')">Supprimer le compte</button>
     </div>
 </body>
 </html>
