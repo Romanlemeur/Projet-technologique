@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="style.css">
     <style>
         .register-container {
-            display: none; /* Cacher le formulaire d'inscription par défaut */
+            display: none;
         }
     </style>
     <script>
@@ -32,7 +32,7 @@
         session_start();
         if (isset($_SESSION['error_message'])) {
             echo '<p style="color: red;">' . $_SESSION['error_message'] . '</p>';
-            unset($_SESSION['error_message']); // Clear the error message after displaying it
+            unset($_SESSION['error_message']); 
         }
         ?>
         <form action="loginProcess.php" method="POST">

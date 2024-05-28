@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $pdo = new PDO('mysql:host=localhost;dbname=plano', 'root', '');
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        // Ajouter le commentaire dans la base de données
+        
         $stmt = $pdo->prepare('INSERT INTO Commentaire (Message, Projet) VALUES (?, ?)');
         $stmt->execute([$message, $projetId]);
 

@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file'])) {
             $pdo = new PDO('mysql:host=localhost;dbname=plano', 'root', '');
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            // Ajouter le fichier dans la base de données
+            
             $stmt = $pdo->prepare('INSERT INTO Fichier (Nom, Type, Projet) VALUES (?, ?, ?)');
             $stmt->execute([$file['name'], $file['type'],$projetId]);
 

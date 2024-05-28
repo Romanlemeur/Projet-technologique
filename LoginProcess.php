@@ -4,7 +4,7 @@ include('config.php');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['login'])) {
-        // Connexion
+       
         $mail = $_POST['mail'];
         $mdp = $_POST['mdp'];
 
@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit();
         }
     } elseif (isset($_POST['register'])) {
-        // Inscription
+       
         $nom = $_POST['nom'];
         $mail = $_POST['mail'];
         $mdp = $_POST['mdp'];
