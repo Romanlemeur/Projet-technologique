@@ -150,10 +150,10 @@ $notifications = getNotifications($conn);
             <h1>Plano</h1>
         </div>
         <ul>
-            <li><a href="#" onclick="redirectTo('page.php')">Accueil</a></li>
-            <li><a href="#" onclick="redirectTo('projet.php')">Projet</a></li>
-            <li><a href="#" onclick="redirectTo('calendrier.php')">Calendrier</a></li>
-            <li><a href="#" onclick="redirectTo('alerte.php')">Notifications</a></li>
+            <li><a href="page.php">Accueil</a></li>
+            <li><a href="projet.php">Projet</a></li>
+            <li><a href="calendrier.php">Calendrier</a></li>
+            <li><a href="alerte.php">Notifications</a></li>
         </ul>
         <div class="profile-banner">
             <img src="image/user.png" alt="Profil">

@@ -14,7 +14,7 @@
         </div>
         <div class="cta">
             <a href="LoginPage.php">Connexion</a>
-            <a href="#" class="btn">Première connexion</a>
+            <a href="LoginPage.php" class="btn">Première connexion</a>
         </div>
     </header>
     <main class="main">
@@ -48,7 +48,7 @@
             </div>
         </div>
         <div class="cta-main">
-            <a href="#" class="btn-main">Commencez Maintenant</a>
+            <a href="LoginPage.php" class="btn-main">Commencez Maintenant</a>
         </div>
     </main>
 </body>
