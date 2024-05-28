@@ -135,9 +135,9 @@ $nomUtilisateur = $_SESSION['nom'];
             <h1>Plano</h1>
         </div>
         <ul>
-            <li><a href="page.php">Accueil</a></li>
-            <li><a href="projet.php">Projet</a></li>
-            <li><a href="Calendrier.php">Calendrier</a></li>
+            <li><a href="adminpage.php">Accueil</a></li>
+            <li><a href="adminprojet.php">Projet</a></li>
+            <li><a href="amdinCalendrier.php">Calendrier</a></li>
             <li><a href="Alerte.php">Notifications</a></li>
         </ul>
         <div class="profile-banner">
@@ -220,12 +220,23 @@ $nomUtilisateur = $_SESSION['nom'];
                                         <div class="progress-bar" style="width: <?= number_format($avancement, 2) ?>%;"></div>
                                     </div>
                                     <div class="modify">
-                                        <form method="POST" action="projet.php">
-                                            <input type="hidden" name="project_id" value="<?= $projet['ID_Projet'] ?>">
-                                            <button type="submit" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce projet ?');">
-                                                <img src="image/corbeille.png" alt="supprimer">
-                                            </button>
-                                        </form>
+                                    <form id="deleteForm" action="delete_project.php" method="post">
+                                        <input type="hidden" id="projectId" name="projectId" value="<?= $projet['ID_Projet']?>">
+                                        <button type="submit" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce projet ?');">
+                                            <img src="image/corbeille.png" alt="supprimer">
+                                        </button>
+                                    </form>
+                                        <script>
+                                            document.getElementById('deleteForm').addEventListener('submit', function(e) {
+                                                e.preventDefault(); // Empêche l'envoi du formulaire par défaut
+                                                var confirmation = confirm('Êtes-vous sûr de vouloir supprimer ce projet ?');
+                                                if (confirmation) {
+                                                    var projectId = parseInt(document.getElementById('projectId').value); // Convertir en entier
+                                                    document.getElementById('projectId').value = projectId; // Mettre à jour la valeur dans le formulaire
+                                                    this.submit(); // Soumet le formulaire
+                                                }
+                                            });
+                                        </script>
                                     </div>
                             </li>
                         </a>
