@@ -1,42 +1,48 @@
 <?php
 session_start();
 if (!isset($_SESSION['nom'])) {
-    header("Location: loginPage.php"); // Rediriger vers la page de connexion si l'utilisateur n'est pas connecté
+    header("Location: loginPage.php"); 
     exit();
 }
 $nomUtilisateur = $_SESSION['nom'];
 
 if (!isset($_GET['id'])) {
-    header("Location: projet.php"); // Rediriger vers la liste des projets si l'ID du projet n'est pas fourni
+    header("Location: projet.php"); 
     exit();
 }
 
 $projetId = $_GET['id'];
 
 try {
-    // Établir une connexion à la base de données
     $pdo = new PDO('mysql:host=localhost;dbname=plano', 'root', '');
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // Récupérer les informations du projet
     $stmt = $pdo->prepare('SELECT * FROM Projet WHERE ID_Projet = ?');
     $stmt->execute([$projetId]);
     $projet = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$projet) {
-        header("Location: projet.php"); // Rediriger vers la liste des projets si le projet n'existe pas
+        header("Location: projet.php"); 
         exit();
     }
 
-    // Récupérer les tâches du projet
     $stmt = $pdo->prepare('SELECT * FROM Tache WHERE Projet = ?');
     $stmt->execute([$projetId]);
     $taches = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $stmt = $pdo->prepare('SELECT * FROM Commentaire WHERE Tache IN (SELECT ID_Tache FROM Tache WHERE Projet = ?)');
+    $stmt->execute([$projetId]);
+    $commentaires = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $stmt = $pdo->prepare('SELECT * FROM Fichier WHERE Commentaire IN (SELECT ID_Commentaire FROM Commentaire WHERE Tache IN (SELECT ID_Tache FROM Tache WHERE Projet = ?))');
+    $stmt->execute([$projetId]);
+    $fichiers = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 } catch (PDOException $e) {
     echo 'Erreur : ' . $e->getMessage();
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -81,6 +87,38 @@ try {
                     </li>
                 <?php endforeach; ?>
             </ul>
+        </div>
+
+        <div class="comment-section">
+            <h3>Commentaires</h3>
+            <ul>
+                <?php foreach ($commentaires as $commentaire): ?>
+                    <li>
+                        <p><?php echo htmlspecialchars($commentaire['Message']); ?></p>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+            <form method="POST" action="add_comment.php">
+                <textarea name="message" placeholder="Ajouter un commentaire" required></textarea>
+                <input type="hidden" name="projet_id" value="<?php echo $projetId; ?>">
+                <button type="submit">Ajouter</button>
+            </form>
+        </div>
+
+        <div class="file-section">
+            <h3>Fichiers</h3>
+            <ul>
+                <?php foreach ($fichiers as $fichier): ?>
+                    <li>
+                        <a href="uploads/<?php echo htmlspecialchars($fichier['Nom']); ?>"><?php echo htmlspecialchars($fichier['Nom']); ?></a>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+            <form method="POST" action="upload_file.php" enctype="multipart/form-data">
+                <input type="file" name="file" required>
+                <input type="hidden" name="projet_id" value="<?php echo $projetId; ?>">
+                <button type="submit">Téléverser</button>
+            </form>
         </div>
     </div>
 </body>

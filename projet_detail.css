@@ -1,0 +1,169 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+.navbar {
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background-color: #124E78;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.navbar .logo {
+    text-align: center;
+    padding: 20px;
+}
+
+.navbar .logo img {
+    width: 80px;
+    height: auto;
+}
+
+.navbar .logo h1 {
+    font-size: 20px;
+    margin: 10px 0 0;
+}
+
+.navbar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.navbar ul li {
+    padding: 15px;
+    text-align: center;
+    font-size: 18px;
+}
+
+.navbar ul li a {
+    color: white;
+    text-decoration: none;
+    display: block;
+}
+
+.navbar ul li a:hover {
+    background-color: #575757;
+}
+
+.profile-banner {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border-top: 1px solid #161616;
+}
+
+.profile-banner img {
+    width: 60px;
+    height: auto;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.profile-banner .profile-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.profile-banner .profile-info p {
+    margin: 0;
+    flex-grow: 1;
+}
+
+.main-content {
+    margin-left: 250px;
+    padding: 20px;
+}
+
+.project-detail-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.project-detail-container h2 {
+    margin-top: 0;
+    font-size: 24px;
+    color: #333;
+}
+
+.project-detail-container p {
+    font-size: 16px;
+    color: #555;
+}
+
+.project-detail-container ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.project-detail-container ul li {
+    background-color: #f9f9f9;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.project-detail-container ul li h4 {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.project-detail-container ul li p {
+    margin: 5px 0 0;
+    font-size: 14px;
+    color: #555;
+}
+
+.comment-section, .file-section {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.comment-section h3, .file-section h3 {
+    margin-top: 0;
+    font-size: 20px;
+    color: #333;
+}
+
+.comment-section form, .file-section form {
+    display: flex;
+    flex-direction: column;
+}
+
+.comment-section form textarea, .file-section form input[type="file"] {
+    padding: 10px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.comment-section form button, .file-section form button {
+    padding: 10px;
+    font-size: 16px;
+    color: white;
+    background-color: #124E78;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.comment-section form button:hover, .file-section form button:hover {
+    background-color: #0a3c5b;
+}
