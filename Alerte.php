@@ -61,7 +61,7 @@
                 <li><a href="page.php">Accueil</a></li>
                 <li><a href="projet.php">Projet</a></li>
                 <li><a href="#">Calendrier</a></li>
-                <li><a href="#">Notifications</a></li>
+                <li><a href="Alerte.php">Notifications</a></li>
             </ul>
             <div class="profile-banner">
                 <img src="image/user.png" alt="Profil">
@@ -74,10 +74,29 @@
             </div>
     </div>
     <div class="main-content">
-        <h2 class="accueil">Notifications, Alertes et Rappels</h2>
-        <div class="sections-container">
-            <!-- Vos sections de notifications, alertes et rappels ici -->
+    <h2 class="accueil">Notifications, Alertes et Rappels</h2>
+    <div class="notification-container">
+        <!-- Notification pour les commentaires -->
+        <div id="comment-notification" class="notification" style="display: none;">
+            <h3>Notifications: commentaires ajoutés</h3>
+            <p>Des commentaires ont été ajoutés à certains projets.</p>
         </div>
+
+        <!-- Notification pour les budgets bientôt atteints -->
+        <div id="budget-notification" class="notification" style="display: none;">
+            <h3>Notifications: Budgets Bientôt Atteints</h3>
+            <p>Les budgets alloués sont bientôt atteints pour certains projets.</p>
+        </div>
+
+        <!-- Notification pour les délais approchants -->
+        <div id="deadline-notification" class="notification" style="display: none;">
+            <h3 style="color: red;">Notifications: Délais Approchants</h3>
+            <p>Les délais approchent pour certains projets.</p>
+        </div>
+    </div>
+ 
+</div>
+
     </div>
     <div id="settings-tab" class="settings-tab">
     <div class="profile-section">
@@ -89,34 +108,6 @@
         </div>
         <button class="logout-button">Déconnexion</button>
         <button class="suppri-button">Supprimer le compte</button>
-    </div>
-
-    <!-- Notification pour les délais approchants -->
-    <div id="deadline-notification" class="notification" style="display: none;">
-        <h3>Notifications: Délais Approchants</h3>
-        <p>Les délais approchent pour certains projets.</p>
-    </div>
-
-    <!-- Notification pour les budgets bientôt atteints -->
-    <div id="budget-notification" class="notification" style="display: none;">
-        <h3>Notifications: Budgets Bientôt Atteints</h3>
-        <p>Les budgets alloués sont bientôt atteints pour certains projets.</p>
-    </div>
-    <div id="deadline-notification" class="notification" style="display: none;">
-        <h3 style="color: red;">Notifications: Délais Approchants</h3>
-        <p>Les délais approchent pour certains projets.</p>
-    </div>
-
-    <!-- Notification pour les budgets bientôt atteints -->
-    <div id="budget-notification" class="notification" style="display: none;">
-        <h3 style="color: orange;">Notifications: Budgets Bientôt Atteints</h3>
-        <p>Les budgets alloués sont bientôt atteints pour certains projets.</p>
-    </div>
-
-    <!-- Notification pour les commentaires réalisés -->
-    <div id="comment-notification" class="notification" style="display: none;">
-        <h3 style="color: green;">Notifications: Commentaires Réalisés</h3>
-        <p>Des commentaires ont été réalisés sur certains projets.</p>
     </div>
 </body>
 </html>
