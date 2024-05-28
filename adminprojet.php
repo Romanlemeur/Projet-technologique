@@ -65,7 +65,6 @@ $nomUtilisateur = $_SESSION['nom'];
         };
     </script>
     <style>
-        /* Styles pour le formulaire modal */
         .modal {
             display: none; 
             position: fixed; 
