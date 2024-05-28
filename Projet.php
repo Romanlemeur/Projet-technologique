@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION['nom'])) {
-    header("Location: loginPage.php"); // Rediriger vers la page de connexion si l'utilisateur n'est pas connecté
+    header("Location: loginPage.php"); 
     exit();
 }
 $nomUtilisateur = $_SESSION['nom'];
@@ -88,18 +88,14 @@ $nomUtilisateur = $_SESSION['nom'];
 
             <?php
                 try {
-                    // Établir une connexion à la base de données
                     $pdo = new PDO('mysql:host=localhost;dbname=plano', 'root', '');
                     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-                    // Vérifier si une recherche a été effectuée
                     $search = isset($_GET['search']) ? $_GET['search'] : '';
                     if ($search) {
-                        // Requête SQL avec une clause WHERE pour filtrer les projets par titre
                         $stmt = $pdo->prepare('SELECT * FROM Projet WHERE Titre LIKE ?');
                         $stmt->execute(['%' . $search . '%']);
                     } else {
-                        // Requête SQL pour récupérer tous les projets
                         $stmt = $pdo->query('SELECT * FROM Projet');
                     }
                     $projets = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -113,7 +109,6 @@ $nomUtilisateur = $_SESSION['nom'];
                 <ul class="project-list">
                     <?php foreach ($projets as $projet): ?>
                         <?php
-                            // Récupérer le nombre total de tâches et le nombre de tâches terminées pour chaque projet
                             $stmt = $pdo->prepare('SELECT COUNT(*) as total, SUM(état) as completed FROM Tache WHERE Projet = ?');
                             $stmt->execute([$projet['ID_Projet']]);
                             $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -121,16 +116,14 @@ $nomUtilisateur = $_SESSION['nom'];
                             $tachesTerminees = $result['completed'];
                             $avancement = ($totalTaches > 0) ? ($tachesTerminees / $totalTaches) * 100 : 0;
 
-                            // Calculer le délai restant
                             $dateFin = new DateTime($projet['Fin']);
                             $dateActuelle = new DateTime();
                             $interval = $dateActuelle->diff($dateFin);
                             $joursRestants = $interval->days;
                             if ($dateActuelle > $dateFin) {
-                                $joursRestants *= -1; // Nombre de jours de retard
+                                $joursRestants *= -1; 
                             }
 
-                            // Déterminer la classe du projet en fonction de l'avancement et du délai restant
                             $classeProjet = 'success';
                             if ($avancement < 75) {
                                 if ($joursRestants < 30) {

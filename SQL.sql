@@ -98,43 +98,36 @@ CREATE TABLE Notification(
 );
 
 
--- Tâches pour le Projet 1
 INSERT INTO Tache (Titre, Debut, Fin, Collaborateur, Projet, état) VALUES
 ("Tâche 1 Projet 1", "2024-05-28", "2024-06-10", 1, 1, 1),
 ("Tâche 2 Projet 1", "2024-06-11", "2024-06-20", 2, 1, 0),
 ("Tâche 3 Projet 1", "2024-06-21", "2024-07-03", 3, 1, 1);
 
--- Tâches pour le Projet 2
 INSERT INTO Tache (Titre, Debut, Fin, Collaborateur, Projet, état) VALUES
 ("Tâche 1 Projet 2", "2024-06-28", "2024-07-10", 1, 2, 0),
 ("Tâche 2 Projet 2", "2024-07-11", "2024-07-20", 4, 2, 1),
 ("Tâche 3 Projet 2", "2024-07-21", "2024-08-29", 2, 2, 0);
 
--- Tâches pour le Projet 3
 INSERT INTO Tache (Titre, Debut, Fin, Collaborateur, Projet, état) VALUES
 ("Tâche 1 Projet 3", "2024-05-12", "2024-05-22", 3, 3, 1),
 ("Tâche 2 Projet 3", "2024-05-23", "2024-06-10", 1, 3, 0),
 ("Tâche 3 Projet 3", "2024-06-11", "2024-07-22", 2, 3, 1);
 
--- Tâches pour le Projet 4
 INSERT INTO Tache (Titre, Debut, Fin, Collaborateur, Projet, état) VALUES
 ("Tâche 1 Projet 4", "2024-04-08", "2024-05-01", 4, 4, 0),
 ("Tâche 2 Projet 4", "2024-05-02", "2024-06-01", 3, 4, 1),
 ("Tâche 3 Projet 4", "2024-06-02", "2024-07-05", 1, 4, 0);
 
--- Tâches pour le Projet 5
 INSERT INTO Tache (Titre, Debut, Fin, Collaborateur, Projet, état) VALUES
 ("Tâche 1 Projet 5", "2024-05-25", "2024-06-05", 2, 5, 1),
 ("Tâche 2 Projet 5", "2024-06-06", "2024-06-20", 4, 5, 0),
 ("Tâche 3 Projet 5", "2024-06-21", "2024-07-01", 1, 5, 1);
 
--- Tâches pour le Projet 6
 INSERT INTO Tache (Titre, Debut, Fin, Collaborateur, Projet, état) VALUES
 ("Tâche 1 Projet 6", "2024-02-02", "2024-04-01", 3, 6, 0),
 ("Tâche 2 Projet 6", "2024-04-02", "2024-06-01", 2, 6, 1),
 ("Tâche 3 Projet 6", "2024-06-02", "2024-08-03", 4, 6, 0);
 
--- Associations de tâches et collaborateurs (si nécessaire)
 INSERT INTO Tache_Collaborateur (ID_Tache, ID_Collaborateur) VALUES
 (1, 1), (1, 2), (1, 3), (1, 4), 
 (2, 1), (2, 4), (2, 3), 
