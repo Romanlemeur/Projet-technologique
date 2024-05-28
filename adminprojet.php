@@ -134,9 +134,9 @@ $nomUtilisateur = $_SESSION['nom'];
             <h1>Plano</h1>
         </div>
         <ul>
-            <li><a href="page.php">Accueil</a></li>
-            <li><a href="projet.php">Projet</a></li>
-            <li><a href="Calendrier.php">Calendrier</a></li>
+            <li><a href="adminpage.php">Accueil</a></li>
+            <li><a href="adminprojet.php">Projet</a></li>
+            <li><a href="adminCalendrier.php">Calendrier</a></li>
             <li><a href="Alerte.php">Notifications</a></li>
         </ul>
         <div class="profile-banner">
