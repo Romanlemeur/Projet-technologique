@@ -125,7 +125,7 @@ $equipes = getEquipes($conn);
             <li><a href="#" onclick="redirectTo('page.php')">Accueil</a></li>
             <li><a href="#" onclick="redirectTo('projet.php')">Projet</a></li>
             <li><a href="#" onclick="redirectTo('calendrier.php')">Calendrier</a></li>
-            <li><a href="#" onclick="redirectTo('notifications.php')">Notifications</a></li>
+            <li><a href="#" onclick="redirectTo('alerte.php')">Notifications</a></li>
         </ul>
         <div class="profile-banner">
             <img src="image/user.png" alt="Profil">
@@ -253,7 +253,6 @@ $equipes = getEquipes($conn);
         <button class="suppri-button" onclick="redirectTo('supprimer_compte.php')">Supprimer le compte</button>
     </div>
 
-    <!-- Slide Up Panel for "Voir les équipes" -->
     <div id="slideUpPanelEquipes" class="slide-up-panel-equipes">
         <div class="slide-up-panel-equipes-content">
             <span class="close-slide-up-panel-equipes" onclick="closeSlideUpPanelEquipes()">&times;</span>

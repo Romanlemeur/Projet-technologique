@@ -43,7 +43,7 @@ $nomUtilisateur = $_SESSION['nom'];
             var chart = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    labels: ['Jan', 'Feb', Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
                     datasets: [{
                         label: 'Projets terminés',
                         backgroundColor: 'rgba(75, 192, 192, 0.2)',
@@ -82,7 +82,7 @@ $nomUtilisateur = $_SESSION['nom'];
             <li><a href="page.php">Accueil</a></li>
             <li><a href="projet.php">Projet</a></li>
             <li><a href="Calendrier.php">Calendrier</a></li>
-            <li><a href="#">Notifications</a></li>
+            <li><a href="alerte.php">Notifications</a></li>
         </ul>
         <div class="profile-banner">
             <img src="image/user.png" alt="Profil">
@@ -98,10 +98,7 @@ $nomUtilisateur = $_SESSION['nom'];
         <div class="projects-container">
             <h2>Projets en cours</h2>
             <div class="filter-section">
-                <form method="GET" action="">
-                    <input type="text" name="search" placeholder="Rechercher..." value="<?php echo htmlspecialchars(isset($_GET['search']) ? $_GET['search'] : ''); ?>">
-                    <button type="submit">Rechercher</button>
-                </form>
+                <input type="text" placeholder="Rechercher...">
             </div>
 
             <?php
@@ -110,16 +107,8 @@ $nomUtilisateur = $_SESSION['nom'];
                     $pdo = new PDO('mysql:host=localhost;dbname=plano', 'root', '');
                     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-                    // Vérifier si une recherche a été effectuée
-                    $search = isset($_GET['search']) ? $_GET['search'] : '';
-                    if ($search) {
-                        // Requête SQL avec une clause WHERE pour filtrer les projets par titre
-                        $stmt = $pdo->prepare('SELECT * FROM Projet WHERE Titre LIKE ?');
-                        $stmt->execute(['%' . $search . '%']);
-                    } else {
-                        // Requête SQL pour récupérer tous les projets
-                        $stmt = $pdo->query('SELECT * FROM Projet');
-                    }
+                    // Exécuter une requête SQL pour récupérer les projets
+                    $stmt = $pdo->query('SELECT * FROM Projet');
                     $projets = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                 } catch (PDOException $e) {
@@ -138,40 +127,19 @@ $nomUtilisateur = $_SESSION['nom'];
                             $totalTaches = $result['total'];
                             $tachesTerminees = $result['completed'];
                             $avancement = ($totalTaches > 0) ? ($tachesTerminees / $totalTaches) * 100 : 0;
-
-                            // Calculer le délai restant
-                            $dateFin = new DateTime($projet['Fin']);
-                            $dateActuelle = new DateTime();
-                            $interval = $dateActuelle->diff($dateFin);
-                            $joursRestants = $interval->days;
-                            if ($dateActuelle > $dateFin) {
-                                $joursRestants *= -1; // Nombre de jours de retard
-                            }
-
-                            // Déterminer la classe du projet en fonction de l'avancement et du délai restant
-                            $classeProjet = 'success';
-                            if ($avancement < 75) {
-                                if ($joursRestants < 30) {
-                                    $classeProjet = 'danger';
-                                } elseif ($joursRestants <= 60) {
-                                    $classeProjet = 'warning';
-                                }
-                            }
                         ?>
-                        <a href="projet_detail.php?id=<?= $projet['ID_Projet'] ?>" class="project-link">
-                            <li class="project-item <?= $classeProjet ?>">
-                                    <div class="info">
-                                        <h3><?= htmlspecialchars($projet['Titre']) ?></h3>
-                                        <p>Description: <?= htmlspecialchars($projet['Description']) ?></p>
-                                        <p>Début: <?= htmlspecialchars($projet['Debut']) ?> | Fin: <?= htmlspecialchars($projet['Fin']) ?></p>
-                                        <p>Objectif: <?= htmlspecialchars($projet['Objectif']) ?></p>
-                                        <p>Avancement: <?= number_format($avancement, 2) ?>%</p>
-                                    </div>
-                                    <div class="progress">
-                                        <div class="progress-bar" style="width: <?= number_format($avancement, 2) ?>%;"></div>
-                                    </div>
-                            </li>
-                        </a>
+                        <li class="project-item success">
+                            <div class="info">
+                                <h3><?= htmlspecialchars($projet['Titre']) ?></h3>
+                                <p>Description: <?= htmlspecialchars($projet['Description']) ?></p>
+                                <p>Début: <?= htmlspecialchars($projet['Debut']) ?> | Fin: <?= htmlspecialchars($projet['Fin']) ?></p>
+                                <p>Objectif: <?= htmlspecialchars($projet['Objectif']) ?></p>
+                                <p>Avancement: <?= number_format($avancement, 2) ?>%</p>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar" style="width: <?= number_format($avancement, 2) ?>%;"></div>
+                            </div>
+                        </li>
                     <?php endforeach; ?>
                 </ul>
             </div>
