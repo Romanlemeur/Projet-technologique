@@ -227,12 +227,12 @@ $nomUtilisateur = $_SESSION['nom'];
                                     </form>
                                         <script>
                                             document.getElementById('deleteForm').addEventListener('submit', function(e) {
-                                                e.preventDefault(); // Empêche l'envoi du formulaire par défaut
+                                                e.preventDefault(); 
                                                 var confirmation = confirm('Êtes-vous sûr de vouloir supprimer ce projet ?');
                                                 if (confirmation) {
-                                                    var projectId = parseInt(document.getElementById('projectId').value); // Convertir en entier
-                                                    document.getElementById('projectId').value = projectId; // Mettre à jour la valeur dans le formulaire
-                                                    this.submit(); // Soumet le formulaire
+                                                    var projectId = parseInt(document.getElementById('projectId').value); 
+                                                    document.getElementById('projectId').value = projectId; 
+                                                    this.submit(); 
                                                 }
                                             });
                                         </script>
@@ -249,7 +249,6 @@ $nomUtilisateur = $_SESSION['nom'];
         </div>
     </div>
 
-    <!-- Modal pour créer un nouveau projet -->
     <div id="newProjectModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
