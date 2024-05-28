@@ -127,14 +127,26 @@ body {
     color: #555;
 }
 
-.comment-section, .file-section {
+.comment-section{
+    margin-top: 20px;
+    margin-right: 20px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    width: 100%;
+}
+
+.file-section {
     margin-top: 20px;
     padding: 20px;
     background-color: white;
     border-radius: 10px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    width: 100%;
 }
-
 .comment-section h3, .file-section h3 {
     margin-top: 0;
     font-size: 20px;
@@ -143,15 +155,19 @@ body {
 
 .comment-section form, .file-section form {
     display: flex;
-    flex-direction: column;
+    flex-direction:row;
 }
-
+.section-last{
+    display:flex ;
+    flex-direction: row;
+}
 .comment-section form textarea, .file-section form input[type="file"] {
     padding: 10px;
     margin-bottom: 10px;
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    display: flex;
 }
 
 .comment-section form button, .file-section form button {
@@ -162,6 +178,7 @@ body {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    display: flex;
 }
 
 .comment-section form button:hover, .file-section form button:hover {

@@ -49,7 +49,7 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Détails du projet</title>
-    <link rel="stylesheet" href="projet.css">
+    <link rel="stylesheet" href="projet_detail.css">
 </head>
 <body>
     <div class="navbar">
@@ -61,7 +61,7 @@ try {
             <li><a href="page.php">Accueil</a></li>
             <li><a href="projet.php">Projet</a></li>
             <li><a href="Calendrier.php">Calendrier</a></li>
-            <li><a href="#">Notifications</a></li>
+            <li><a href="Alerte.php">Notifications</a></li>
         </ul>
         <div class="profile-banner">
             <img src="image/user.png" alt="Profil">
@@ -88,7 +88,7 @@ try {
                 <?php endforeach; ?>
             </ul>
         </div>
-
+        <div class="section-last">
         <div class="comment-section">
             <h3>Commentaires</h3>
             <ul>
@@ -119,6 +119,7 @@ try {
                 <input type="hidden" name="projet_id" value="<?php echo $projetId; ?>">
                 <button type="submit">Téléverser</button>
             </form>
+        </div>
         </div>
     </div>
 </body>
