@@ -19,6 +19,10 @@ $nomUtilisateur = $_SESSION['nom'];
             var settingsTab = document.getElementById('settings-tab');
             settingsTab.classList.toggle('visible');
         }
+
+        function redirectTo(url) {
+            window.location.href = url;
+        }
     </script>
 </head>
 <body>
@@ -28,10 +32,10 @@ $nomUtilisateur = $_SESSION['nom'];
             <h1>Plano</h1>
         </div>
         <ul>
-            <li><a href="page.php">Accueil</a></li>
-            <li><a href="projet.php">Projet</a></li>
-            <li><a href="Calendrier.php">Calendrier</a></li>
-            <li><a href="#">Notifications</a></li>
+            <li><a href="#" onclick="redirectTo('page.php')">Accueil</a></li>
+            <li><a href="#" onclick="redirectTo('projet.php')">Projet</a></li>
+            <li><a href="#" onclick="redirectTo('calendrier.php')">Calendrier</a></li>
+            <li><a href="#" onclick="redirectTo('notifications.php')">Notifications</a></li>
         </ul>
         <div class="profile-banner">
             <img src="image/user.png" alt="Profil">
@@ -53,7 +57,7 @@ $nomUtilisateur = $_SESSION['nom'];
                     <li>Projet 2</li>
                     <li>Projet 3</li>
                 </ul>
-                <button>Mes projets</button>
+                <button onclick="redirectTo('Projet.php')">Mes projets</button>
             </div>
             <div class="section">
                 <h3>Les équipes</h3>
@@ -62,7 +66,7 @@ $nomUtilisateur = $_SESSION['nom'];
                     <li>Équipe 2</li>
                     <li>Équipe 3</li>
                 </ul>
-                <button>Mes équipes</button>
+                <button onclick="redirectTo('equipes.php')">Mes équipes</button>
             </div>
             <div class="section">
                 <h3>Notifications</h3>
@@ -71,7 +75,7 @@ $nomUtilisateur = $_SESSION['nom'];
                     <li>Notification 2</li>
                     <li>Notification 3</li>
                 </ul>
-                <button>Voir toutes les notifications</button>
+                <button onclick="redirectTo('alerte.php')">Voir toutes les notifications</button>
             </div>
         </div>
         <div class="calendar-section">
@@ -81,12 +85,10 @@ $nomUtilisateur = $_SESSION['nom'];
                         include('config.php');
 
                         function getTasksForCurrentWeek($conn) {
-                        // Obtention de la date de début et de fin de la semaine actuelle
                         $startDate = date('Y-m-d', strtotime('monday this week'));
                         $endDate = date('Y-m-d', strtotime('sunday this week'));
                             
                         $nom = $_SESSION['nom'] ;
-                        // Requête pour récupérer les tâches pour la semaine actuelle
                         $sql = "SELECT Tache.*, GROUP_CONCAT(Collaborateur.Nom SEPARATOR ', ') as Collaborateurs
                         FROM Tache
                         LEFT JOIN Tache_Collaborateur ON Tache.ID_Tache = Tache_Collaborateur.ID_Tache
@@ -103,7 +105,7 @@ $nomUtilisateur = $_SESSION['nom'];
                         $result = $conn->query($sql);
                         $tasks = [];
                         
-                        // Récupération des tâches de la base de données
+                        
                         if ($result->num_rows > 0) {
                             while($row = $result->fetch_assoc()) {
                                 $tasks[] = $row;
@@ -114,23 +116,23 @@ $nomUtilisateur = $_SESSION['nom'];
                     }
 
                     function generateColorFromId($id) {
-                        // Convert the ID to a hexadecimal string and use it to generate a color
-                        $hash = md5($id); // Create a hash from the ID
-                        $color = substr($hash, 0, 6); // Use the first 6 characters as the color code
+                       
+                        $hash = md5($id); 
+                        $color = substr($hash, 0, 6); 
                         return '#' . $color;
                     }
                     
-                    // Fonction pour générer le calendrier de la semaine actuelle avec les tâches
+                    
                     function generateCalendarForCurrentWeek($conn) {
-                        // Obtention de la liste des tâches pour la semaine actuelle
+                        
                         $tasks = getTasksForCurrentWeek($conn);
                     
-                        // Génération du calendrier
+                        
                         $calendar = '<table class="calendar-table">';
                         $calendar .= '<thead><tr><th>Lun</th><th>Mar</th><th>Mer</th><th>Jeu</th><th>Ven</th><th>Sam</th><th>Dim</th></tr></thead>';
                         $calendar .= '<tbody>';
                     
-                        $currentDate = strtotime('monday this week'); // Date de début de la semaine actuelle
+                        $currentDate = strtotime('monday this week'); 
                     
                         for ($i = 0; $i < 1; $i++) {
                             $calendar .= '<tr>';
@@ -138,12 +140,10 @@ $nomUtilisateur = $_SESSION['nom'];
                                 $calendar .= '<td>';
                                 $calendar .= '<div class="date">' . date('j', $currentDate) . '</div>';
                     
-                                // Vérifier s'il y a des tâches pour cette date
                                 $tasksForDate = array_filter($tasks, function($task) use ($currentDate) {
                                     return strtotime($task['Debut']) <= $currentDate && strtotime($task['Fin']) >= $currentDate;
                                 });
                     
-                                // Afficher les tâches pour cette date
                                 foreach ($tasksForDate as $task) {
                                     $color = generateColorFromId($task['ID_Tache']);
                                     $calendar .= "<div class='task' style='background-color : $color'>";
@@ -153,7 +153,7 @@ $nomUtilisateur = $_SESSION['nom'];
                                 }
                     
                                 $calendar .= '</td>';
-                                $currentDate = strtotime('+1 day', $currentDate); // Passer au jour suivant
+                                $currentDate = strtotime('+1 day', $currentDate); 
                             }
                             $calendar .= '</tr>';
                         }
@@ -176,8 +176,9 @@ $nomUtilisateur = $_SESSION['nom'];
             <input type="text" placeholder="Confirmer le mot de passe">
             <button>Nouveau Mot de Passe</button>
         </div>
-        <button class="logout-button">Déconnexion</button>
-        <button class="suppri-button">Supprimer le compte</button>
+        <button class="logout-button" onclick="redirectTo('logout.php')">Déconnexion</button>
+        <button class="suppri-button" onclick="redirectTo('supprimer_compte.php')">Supprimer le compte</button>
     </div>
 </body>
 </html>
+
