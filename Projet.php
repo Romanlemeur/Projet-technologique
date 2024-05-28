@@ -25,7 +25,7 @@ $nomUtilisateur = $_SESSION['nom'];
             var chart = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    labels: ['Jan', 'Feb', Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
                     datasets: [{
                         label: 'Projets terminés',
                         backgroundColor: 'rgba(75, 192, 192, 0.2)',
@@ -80,56 +80,51 @@ $nomUtilisateur = $_SESSION['nom'];
         <div class="projects-container">
             <h2>Projets en cours</h2>
             <div class="filter-section">
-                <select>
-                    <option value="">Filtrer par équipe</option>
-                    <option value="team1">Équipe 1</option>
-                    <option value="team2">Équipe 2</option>
-                </select>
-                <select>
-                    <option value="">Filtrer par client</option>
-                    <option value="client1">Client 1</option>
-                    <option value="client2">Client 2</option>
-                </select>
-                <select>
-                    <option value="">Filtrer par priorité</option>
-                    <option value="high">Haute</option>
-                    <option value="medium">Moyenne</option>
-                    <option value="low">Basse</option>
-                </select>
                 <input type="text" placeholder="Rechercher...">
             </div>
-            <ul class="project-list">
-                <li class="project-item success">
-                    <div class="info">
-                        <h3>Projet 1</h3>
-                        <p>Responsable: Jean Dupont</p>
-                        <p>Début: 01/01/2023 | Jalon: 3/5 | Délai: Respecté | Budget: Ok</p>
-                    </div>
-                    <div class="progress">
-                        <div class="progress-bar" style="width: 60%;"></div>
-                    </div>
-                </li>
-                <li class="project-item warning">
-                    <div class="info">
-                        <h3>Projet 2</h3>
-                        <p>Responsable: Marie Curie</p>
-                        <p>Début: 15/02/2023 | Jalon: 2/5 | Délai: En retard | Budget: Ok</p>
-                    </div>
-                    <div class="progress">
-                        <div class="progress-bar" style="width: 40%;"></div>
-                    </div>
-                </li>
-                <li class="project-item danger">
-                    <div class="info">
-                        <h3>Projet 3</h3>
-                        <p>Responsable: Albert Einstein</p>
-                        <p>Début: 01/03/2023 | Jalon: 1/5 | Délai: En retard | Budget: Dépassé</p>
-                    </div>
-                    <div class="progress">
-                        <div class="progress-bar" style="width: 20%;"></div>
-                    </div>
-                </li>
-            </ul>
+
+            <?php
+                try {
+                    // Établir une connexion à la base de données
+                    $pdo = new PDO('mysql:host=localhost;dbname=plano', 'root', '');
+                    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+                    // Exécuter une requête SQL pour récupérer les projets
+                    $stmt = $pdo->query('SELECT * FROM Projet');
+                    $projets = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                } catch (PDOException $e) {
+                    echo 'Erreur : ' . $e->getMessage();
+                }
+            ?>
+
+            <div class="project-list-container" style="max-height: 500px; overflow-y: auto;">
+                <ul class="project-list">
+                    <?php foreach ($projets as $projet): ?>
+                        <?php
+                            // Récupérer le nombre total de tâches et le nombre de tâches terminées pour chaque projet
+                            $stmt = $pdo->prepare('SELECT COUNT(*) as total, SUM(état) as completed FROM Tache WHERE Projet = ?');
+                            $stmt->execute([$projet['ID_Projet']]);
+                            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+                            $totalTaches = $result['total'];
+                            $tachesTerminees = $result['completed'];
+                            $avancement = ($totalTaches > 0) ? ($tachesTerminees / $totalTaches) * 100 : 0;
+                        ?>
+                        <li class="project-item success">
+                            <div class="info">
+                                <h3><?= htmlspecialchars($projet['Titre']) ?></h3>
+                                <p>Description: <?= htmlspecialchars($projet['Description']) ?></p>
+                                <p>Début: <?= htmlspecialchars($projet['Debut']) ?> | Fin: <?= htmlspecialchars($projet['Fin']) ?></p>
+                                <p>Objectif: <?= htmlspecialchars($projet['Objectif']) ?></p>
+                                <p>Avancement: <?= number_format($avancement, 2) ?>%</p>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar" style="width: <?= number_format($avancement, 2) ?>%;"></div>
+                            </div>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
         </div>
         <div class="chart-container">
             <canvas id="projectsChart"></canvas>
@@ -148,4 +143,3 @@ $nomUtilisateur = $_SESSION['nom'];
     </div>
 </body>
 </html>
-
