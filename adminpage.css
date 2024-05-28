@@ -95,7 +95,7 @@ h2 {
 .settings-tab {
     position: fixed;
     top: 0;
-    right: -400px; /* Initially hidden outside the viewport */
+    right: -400px; 
     width: 350px;
     height: 100%;
     background-color: #f4f4f4;
@@ -106,7 +106,7 @@ h2 {
 }
 
 .settings-tab.visible {
-    right: 0; /* Slide in */
+    right: 0;
 }
 
 .settings-tab .profile-section {
