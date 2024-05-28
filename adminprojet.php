@@ -137,7 +137,7 @@ $nomUtilisateur = $_SESSION['nom'];
         <ul>
             <li><a href="adminpage.php">Accueil</a></li>
             <li><a href="adminprojet.php">Projet</a></li>
-            <li><a href="amdinCalendrier.php">Calendrier</a></li>
+            <li><a href="adminCalendrier.php">Calendrier</a></li>
             <li><a href="Alerte.php">Notifications</a></li>
         </ul>
         <div class="profile-banner">

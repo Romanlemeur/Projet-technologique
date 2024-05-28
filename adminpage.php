@@ -22,8 +22,8 @@
         <ul>
             <li><a href="adminpage.php">Accueil</a></li>
             <li><a href="adminprojet.php">Projet</a></li>
-            <li><a href="#">Calendrier</a></li>
-            <li><a href="#">Notifications</a></li>
+            <li><a href="adminCalendrier">Calendrier</a></li>
+            <li><a href="Alerte">Notifications</a></li>
         </ul>
         <div class="profile-banner">
             <img src="image/user.png" alt="Profil">
