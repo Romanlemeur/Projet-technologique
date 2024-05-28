@@ -1,3 +1,11 @@
+<?php
+session_start();
+if (!isset($_SESSION['nom'])) {
+    header("Location: loginPage.php"); // Rediriger vers la page de connexion si l'utilisateur n'est pas connecté
+    exit();
+}
+$nomUtilisateur = $_SESSION['nom'];
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -53,15 +61,15 @@
             <h1>Plano</h1>
         </div>
         <ul>
-            <li><a href="adminpage.php">Accueil</a></li>
-            <li><a href="adminprojet.php">Projet</a></li>
-            <li><a href="#">Calendrier</a></li>
+            <li><a href="page.php">Accueil</a></li>
+            <li><a href="projet.php">Projet</a></li>
+            <li><a href="Calendrier.php">Calendrier</a></li>
             <li><a href="#">Notifications</a></li>
         </ul>
         <div class="profile-banner">
             <img src="image/user.png" alt="Profil">
             <div class="profile-info">
-                <p>Admin</p>
+                <p><?php echo htmlspecialchars($nomUtilisateur); ?></p>
                 <div class="settings-button">
                     <a href="javascript:void(0);" onclick="toggleSettings()"><img src="image/settings.png" alt="Réglages"></a>
                 </div>
@@ -72,82 +80,95 @@
         <div class="projects-container">
             <h2>Projets en cours</h2>
             <div class="filter-section">
-                <select>
-                    <option value="">Filtrer par équipe</option>
-                    <option value="team1">Équipe 1</option>
-                    <option value="team2">Équipe 2</option>
-                </select>
-                <select>
-                    <option value="">Filtrer par client</option>
-                    <option value="client1">Client 1</option>
-                    <option value="client2">Client 2</option>
-                </select>
-                <select>
-                    <option value="">Filtrer par priorité</option>
-                    <option value="high">Haute</option>
-                    <option value="medium">Moyenne</option>
-                    <option value="low">Basse</option>
-                </select>
-                <input type="text" placeholder="Rechercher...">
+                <form method="GET" action="">
+                    <input type="text" name="search" placeholder="Rechercher..." value="<?php echo htmlspecialchars(isset($_GET['search']) ? $_GET['search'] : ''); ?>">
+                    <button type="submit">Rechercher</button>
+                </form>
             </div>
-            <ul class="project-list">
-                <li class="project-item success">
-                    <div class="info">
-                        <h3>Projet 1</h3>
-                        <p>Responsable: Jean Dupont</p>
-                        <p>Début: 01/01/2023 | Jalon: 3/5 | Délai: Respecté | Budget: Ok</p>
-                    </div>
-                    <div class="progress">
-                        <div class="progress-bar" style="width: 60%;"></div>
-                    </div>
-                    <div class="modify">
-                        <a href="#"><img src="image/edit.png" alt="Modifier"></a>
-                    </div>
-                </li>
-                <li class="project-item warning">
-                    <div class="info">
-                        <h3>Projet 2</h3>
-                        <p>Responsable: Marie Curie</p>
-                        <p>Début: 15/02/2023 | Jalon: 2/5 | Délai: En retard | Budget: Ok</p>
-                    </div>
-                    <div class="progress">
-                        <div class="progress-bar" style="width: 40%;"></div>
-                    </div>
-                    <div class="modify">
-                        <a href="#"><img src="image/edit.png" alt="Modifier"></a>
-                    </div>
-                </li>
-                <li class="project-item danger">
-                    <div class="info">
-                        <h3>Projet 3</h3>
-                        <p>Responsable: Albert Einstein</p>
-                        <p>Début: 01/03/2023 | Jalon: 1/5 | Délai: En retard | Budget: Dépassé</p>
-                    </div>
-                    <div class="progress">
-                        <div class="progress-bar" style="width: 20%;"></div>
-                    </div>
-                    <div class="modify">
-                        <a href="#"><img src="image/edit.png" alt="Modifier"></a>
-                    </div>
-                </li>
-            </ul>
+
+            <?php
+                try {
+                    // Établir une connexion à la base de données
+                    $pdo = new PDO('mysql:host=localhost;dbname=plano', 'root', '');
+                    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+                    // Vérifier si une recherche a été effectuée
+                    $search = isset($_GET['search']) ? $_GET['search'] : '';
+                    if ($search) {
+                        // Requête SQL avec une clause WHERE pour filtrer les projets par titre
+                        $stmt = $pdo->prepare('SELECT * FROM Projet WHERE Titre LIKE ?');
+                        $stmt->execute(['%' . $search . '%']);
+                    } else {
+                        // Requête SQL pour récupérer tous les projets
+                        $stmt = $pdo->query('SELECT * FROM Projet');
+                    }
+                    $projets = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                } catch (PDOException $e) {
+                    echo 'Erreur : ' . $e->getMessage();
+                }
+            ?>
+
+            <div class="project-list-container" style="max-height: 500px; overflow-y: auto;">
+                <ul class="project-list">
+                    <?php foreach ($projets as $projet): ?>
+                        <?php
+                            // Récupérer le nombre total de tâches et le nombre de tâches terminées pour chaque projet
+                            $stmt = $pdo->prepare('SELECT COUNT(*) as total, SUM(état) as completed FROM Tache WHERE Projet = ?');
+                            $stmt->execute([$projet['ID_Projet']]);
+                            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+                            $totalTaches = $result['total'];
+                            $tachesTerminees = $result['completed'];
+                            $avancement = ($totalTaches > 0) ? ($tachesTerminees / $totalTaches) * 100 : 0;
+
+                            // Calculer le délai restant
+                            $dateFin = new DateTime($projet['Fin']);
+                            $dateActuelle = new DateTime();
+                            $interval = $dateActuelle->diff($dateFin);
+                            $joursRestants = $interval->days;
+                            if ($dateActuelle > $dateFin) {
+                                $joursRestants *= -1; // Nombre de jours de retard
+                            }
+
+                            // Déterminer la classe du projet en fonction de l'avancement et du délai restant
+                            $classeProjet = 'success';
+                            if ($avancement < 75) {
+                                if ($joursRestants < 30) {
+                                    $classeProjet = 'danger';
+                                } elseif ($joursRestants <= 60) {
+                                    $classeProjet = 'warning';
+                                }
+                            }
+                        ?>
+                        <a href="projet_detail.php?id=<?= $projet['ID_Projet'] ?>" class="project-link">    
+                            <li class="project-item <?= $classeProjet ?>">
+                                    <div class="info">
+                                        <h3><?= htmlspecialchars($projet['Titre']) ?></h3>
+                                        <p>Description: <?= htmlspecialchars($projet['Description']) ?></p>
+                                        <p>Début: <?= htmlspecialchars($projet['Debut']) ?> | Fin: <?= htmlspecialchars($projet['Fin']) ?></p>
+                                        <p>Objectif: <?= htmlspecialchars($projet['Objectif']) ?></p>
+                                        <p>Avancement: <?= number_format($avancement, 2) ?>%</p>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-bar" style="width: <?= number_format($avancement, 2) ?>%;"></div>
+                                    </div>
+                                    <div class="modify">
+                                        <a href="#"><img src="image/edit.png" alt="Modifier"></a>
+                                    </div>
+                            </li>
+                        </a>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
         </div>
         <div class="chart-container">
             <canvas id="projectsChart"></canvas>
-        </div>
-        <div class="stats-container">
-            <h2>Modifier les statistiques</h2>
-            <form>
-                <label for="completed-projects">Projets terminés par mois:</label>
-                <input type="text" id="completed-projects" name="completed-projects" placeholder="Ex: 10, 5, 15, ...">
-                <button type="submit">Mettre à jour</button>
-            </form>
         </div>
     </div>
     <div id="settings-tab" class="settings-tab">
         <div class="profile-section">
             <img src="image/user.png" alt="Profil">
-            <p>Admin</p>
+            <p><?php echo htmlspecialchars($nomUtilisateur); ?></p>
             <input type="text" placeholder="Nouveau mot de passe">
             <input type="text" placeholder="Confirmer le mot de passe">
             <button>Nouveau Mot de Passe</button>
@@ -156,6 +177,4 @@
         <button class="suppri-button">Supprimer le compte</button>
     </div>
 </body>
-</html>
-
 </html>

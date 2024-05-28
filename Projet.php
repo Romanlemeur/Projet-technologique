@@ -19,31 +19,13 @@ $nomUtilisateur = $_SESSION['nom'];
             var settingsTab = document.getElementById('settings-tab');
             settingsTab.classList.toggle('visible');
         }
-        function updatePassword() {
-            var newPassword = document.getElementById('new-password').value;
-            var confirmPassword = document.getElementById('confirm-password').value;
-
-            if (newPassword === confirmPassword) {
-                var xhr = new XMLHttpRequest();
-                xhr.open("POST", "update_password.php", true);
-                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState === 4 && xhr.status === 200) {
-                        alert("Mot de passe mis à jour avec succès");
-                    }
-                };
-                xhr.send("newPassword=" + encodeURIComponent(newPassword));
-            } else {
-                alert("Les mots de passe ne correspondent pas");
-            }
-        }
 
         window.onload = function() {
             var ctx = document.getElementById('projectsChart').getContext('2d');
             var chart = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: ['Jan', 'Feb', Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
                     datasets: [{
                         label: 'Projets terminés',
                         backgroundColor: 'rgba(75, 192, 192, 0.2)',
@@ -82,7 +64,7 @@ $nomUtilisateur = $_SESSION['nom'];
             <li><a href="page.php">Accueil</a></li>
             <li><a href="projet.php">Projet</a></li>
             <li><a href="Calendrier.php">Calendrier</a></li>
-            <li><a href="alerte.php">Notifications</a></li>
+            <li><a href="#">Notifications</a></li>
         </ul>
         <div class="profile-banner">
             <img src="image/user.png" alt="Profil">
@@ -98,7 +80,10 @@ $nomUtilisateur = $_SESSION['nom'];
         <div class="projects-container">
             <h2>Projets en cours</h2>
             <div class="filter-section">
-                <input type="text" placeholder="Rechercher...">
+                <form method="GET" action="">
+                    <input type="text" name="search" placeholder="Rechercher..." value="<?php echo htmlspecialchars(isset($_GET['search']) ? $_GET['search'] : ''); ?>">
+                    <button type="submit">Rechercher</button>
+                </form>
             </div>
 
             <?php
@@ -107,8 +92,16 @@ $nomUtilisateur = $_SESSION['nom'];
                     $pdo = new PDO('mysql:host=localhost;dbname=plano', 'root', '');
                     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-                    // Exécuter une requête SQL pour récupérer les projets
-                    $stmt = $pdo->query('SELECT * FROM Projet');
+                    // Vérifier si une recherche a été effectuée
+                    $search = isset($_GET['search']) ? $_GET['search'] : '';
+                    if ($search) {
+                        // Requête SQL avec une clause WHERE pour filtrer les projets par titre
+                        $stmt = $pdo->prepare('SELECT * FROM Projet WHERE Titre LIKE ?');
+                        $stmt->execute(['%' . $search . '%']);
+                    } else {
+                        // Requête SQL pour récupérer tous les projets
+                        $stmt = $pdo->query('SELECT * FROM Projet');
+                    }
                     $projets = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                 } catch (PDOException $e) {
@@ -127,19 +120,40 @@ $nomUtilisateur = $_SESSION['nom'];
                             $totalTaches = $result['total'];
                             $tachesTerminees = $result['completed'];
                             $avancement = ($totalTaches > 0) ? ($tachesTerminees / $totalTaches) * 100 : 0;
+
+                            // Calculer le délai restant
+                            $dateFin = new DateTime($projet['Fin']);
+                            $dateActuelle = new DateTime();
+                            $interval = $dateActuelle->diff($dateFin);
+                            $joursRestants = $interval->days;
+                            if ($dateActuelle > $dateFin) {
+                                $joursRestants *= -1; // Nombre de jours de retard
+                            }
+
+                            // Déterminer la classe du projet en fonction de l'avancement et du délai restant
+                            $classeProjet = 'success';
+                            if ($avancement < 75) {
+                                if ($joursRestants < 30) {
+                                    $classeProjet = 'danger';
+                                } elseif ($joursRestants <= 60) {
+                                    $classeProjet = 'warning';
+                                }
+                            }
                         ?>
-                        <li class="project-item success">
-                            <div class="info">
-                                <h3><?= htmlspecialchars($projet['Titre']) ?></h3>
-                                <p>Description: <?= htmlspecialchars($projet['Description']) ?></p>
-                                <p>Début: <?= htmlspecialchars($projet['Debut']) ?> | Fin: <?= htmlspecialchars($projet['Fin']) ?></p>
-                                <p>Objectif: <?= htmlspecialchars($projet['Objectif']) ?></p>
-                                <p>Avancement: <?= number_format($avancement, 2) ?>%</p>
-                            </div>
-                            <div class="progress">
-                                <div class="progress-bar" style="width: <?= number_format($avancement, 2) ?>%;"></div>
-                            </div>
-                        </li>
+                        <a href="projet_detail.php?id=<?= $projet['ID_Projet'] ?>" class="project-link">    
+                            <li class="project-item <?= $classeProjet ?>">
+                                    <div class="info">
+                                        <h3><?= htmlspecialchars($projet['Titre']) ?></h3>
+                                        <p>Description: <?= htmlspecialchars($projet['Description']) ?></p>
+                                        <p>Début: <?= htmlspecialchars($projet['Debut']) ?> | Fin: <?= htmlspecialchars($projet['Fin']) ?></p>
+                                        <p>Objectif: <?= htmlspecialchars($projet['Objectif']) ?></p>
+                                        <p>Avancement: <?= number_format($avancement, 2) ?>%</p>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-bar" style="width: <?= number_format($avancement, 2) ?>%;"></div>
+                                    </div>
+                            </li>
+                        </a>
                     <?php endforeach; ?>
                 </ul>
             </div>
@@ -152,12 +166,12 @@ $nomUtilisateur = $_SESSION['nom'];
         <div class="profile-section">
             <img src="image/user.png" alt="Profil">
             <p><?php echo htmlspecialchars($nomUtilisateur); ?></p>
-            <input type="password" id="new-password" placeholder="Nouveau mot de passe">
-            <input type="password" id="confirm-password" placeholder="Confirmer le mot de passe">
-            <button onclick="updatePassword()">Nouveau Mot de Passe</button>
+            <input type="text" placeholder="Nouveau mot de passe">
+            <input type="text" placeholder="Confirmer le mot de passe">
+            <button>Nouveau Mot de Passe</button>
         </div>
-        <button class="logout-button" onclick="redirectTo('logout.php')">Déconnexion</button>
-        <button class="suppri-button" onclick="redirectTo('supprimer_compte.php')">Supprimer le compte</button>
+        <button class="logout-button">Déconnexion</button>
+        <button class="suppri-button">Supprimer le compte</button>
     </div>
 </body>
 </html>
